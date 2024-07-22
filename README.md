@@ -11,5 +11,7 @@
 <br />
 
 USB Locker et un Fork de : https://github.com/g4xyk00/usb-locker
-J'ai modifier pour ajoutée la lang francais 
+<br />
+J'ai modifier pour ajoutée la lang francais
+<br />
 Et aussi créer un fichier Bat pour le lancement en administrateur
