@@ -1,7 +1,7 @@
 :: USB Locker v1.4
 :: Auteur: g4xyk00
 :: Traducteur fr: Katsugami
-:: Teste sur Windows 7, 10
+:: Teste sur Windows 7, 10, 11
 
 echo off
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (set "DEL=%%a")
