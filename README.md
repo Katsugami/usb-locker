@@ -10,7 +10,7 @@
 3. Tapez 1 et appuyez sur ENTRÉE pour autoriser l'accès, ou tapez 2 et appuyez sur ENTRÉE pour refuser l'accès.
 <br />
 
-USB Locker et un Fork de : https://github.com/g4xyk00/usb-locker
+USB_Locker_en-fr et un Fork de : https://github.com/g4xyk00/usb-locker
 <br />
 J'ai modifier pour ajoutée la lang francais
 <br />
