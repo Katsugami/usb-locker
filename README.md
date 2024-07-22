@@ -9,3 +9,7 @@
 2. Choisissez la langue : 1 = Anglais, 2 = Français
 3. Tapez 1 et appuyez sur ENTRÉE pour autoriser l'accès, ou tapez 2 et appuyez sur ENTRÉE pour refuser l'accès.
 <br />
+
+USB Locker et un Fork de : https://github.com/g4xyk00/usb-locker
+J'ai modifier pour ajoutée la lang francais 
+Et aussi créer un fichier Bat pour le lancement en administrateur
