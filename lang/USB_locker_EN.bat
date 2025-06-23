@@ -1,15 +1,17 @@
 :: USB Locker v1.4
 :: Author: g4xyk00
-:: Tested on Windows 7, 10 ,11
+:: Tested on Windows 11
 
 echo off
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (set "DEL=%%a")
 
 :: To Obtain Current SID
 For /f "tokens=2 delims=\" %%a in ('whoami') do (set currentUser=%%a)
-wmic useraccount where name="%currentUser%" get sid | findstr "S-" > 0.txt
+powershell useraccount where name="%currentUser%" get sid | findstr "S-" > 0.txt
 set /P currentSID=<0.txt
 For /f "tokens=1 delims= " %%a in ('echo %currentSID%') do (set currentSID=%%a)
+For /F "tokens=3" %%c in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start 2^>nul') do (set StartVal=%%c)
+
  
 :MAIN_ACTIVITY
 cls
@@ -142,6 +144,14 @@ set /A AccessStatusCurrent = %AllClassesDenyStatusCurrent% + %RemovableDenyReadS
 echo Existing removable storage access (Current User) is:
 IF "%AccessStatusCurrent%" NEQ "0" ( call :PainText 02 "DENIED" )
 IF "%AccessStatusCurrent%" EQU "0" ( call :PainText 04 "ALLOWED" )
+echo L'acces aux Cles USB est :
+if "%StartVal%"=="0x3" (
+    call :PainText 04 "ALLOWED"
+) else if "%StartVal%"=="0x4" (
+    call :PainText 02 "DENIED"
+) else (
+    echo La valeur Start est inconnue ou absente : %StartVal%
+)
 del 0.txt
 del 1.txt
 
@@ -153,6 +163,8 @@ echo [1] Allow removable storage access
 echo [2] Deny removable storage access 
 echo [3] Revert to default setting
 echo [4] Create Log
+echo [5] Enables USB Keys
+echo [6] Disables USB Keys
 echo [0] Exit Program
 @echo:
 SET /P A=Please select an action (e.g. 2) and press ENTER: 
@@ -162,6 +174,8 @@ IF %A%==1 GOTO ACCESS_ALLOW
 IF %A%==2 GOTO ACCESS_DENY
 IF %A%==3 GOTO ACCESS_CLEAR
 IF %A%==4 GOTO CREATE_LOG
+IF %A%==5 GOTO ENABLE_USB_KEYS
+IF %A%==6 GOTO DISABLE_USB_KEYS
 
 :ACCESS_ALLOW
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices /t REG_DWORD /v Deny_All /d 0 /f > nul 2>&1
@@ -212,6 +226,19 @@ echo Reverted to Default Setting!
 @echo:
 GOTO MAIN_ACTIVITY
 
+:ENABLE_USB_KEYS
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 3 /f
+echo Access to USB Keys is now ALLOWED!
+set "StartVal=0x3"
+@echo:
+GOTO MAIN_ACTIVITY
+
+:DISABLE_USB_KEYS
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 4 /f
+set "StartVal=0x4"
+echo Access to USB Keys is now DENIED!
+@echo:
+GOTO MAIN_ACTIVITY
 
 :CREATE_LOG
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices /s > usblock_log.txt
