@@ -1,4 +1,4 @@
-:: USB Locker v1.4
+:: USB Locker v1.5
 :: Auteur: g4xyk00
 :: Traducteur fr: Katsugami
 :: Teste sur Windows 11
