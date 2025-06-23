@@ -1,4 +1,4 @@
-:: USB Locker v1.1.1
+:: USB Locker v1.4
 :: Auteur: g4xyk00
 :: Traducteur fr: Katsugami
 :: Teste sur Windows 11
@@ -238,7 +238,6 @@ if "%StartVal%"=="0x4" (
 	reg export "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" "!backup_file!"
 	echo %msg_backup%
 	reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 3 /f
-	echo L'acces aux Cles USB est maintenant AUTORISE!
 	set "StartVal=0x3"
 )
 @echo:
