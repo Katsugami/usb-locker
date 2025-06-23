@@ -221,6 +221,7 @@ reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorage
 reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b} /v Deny_Write /f > nul 2>&1
 reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices\{F33FDC04-D1AC-4E8E-9A30-19BBD4B108AE} /v Deny_Read /f > nul 2>&1
 reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices\{F33FDC04-D1AC-4E8E-9A30-19BBD4B108AE} /v Deny_Write /f > nul 2>&1
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 3 /f
 RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 echo Reverted to Default Setting!
 @echo:
