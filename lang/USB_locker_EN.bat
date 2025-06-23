@@ -222,22 +222,35 @@ reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorage
 reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices\{F33FDC04-D1AC-4E8E-9A30-19BBD4B108AE} /v Deny_Read /f > nul 2>&1
 reg delete HKU\%currentSID%\SOFTWARE\Policies\Microsoft\Windows\RemovableStorageDevices\{F33FDC04-D1AC-4E8E-9A30-19BBD4B108AE} /v Deny_Write /f > nul 2>&1
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 3 /f
+set "StartVal=0x3"
 RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 echo Reverted to Default Setting!
 @echo:
 GOTO MAIN_ACTIVITY
 
 :ENABLE_USB_KEYS
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 3 /f
-echo Access to USB Keys is now ALLOWED!
-set "StartVal=0x3"
+if "%StartVal%"=="0x4" (
+	set "backup_dir=%~dp0Backup_reg"
+	set "backup_file=Backup_reg\USB_LOCKER_backup.reg"
+	if not exist "!backup_dir!" mkdir "!backup_dir!"
+	reg export "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" "!backup_file!"
+	echo %msg_backup%
+	reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 3 /f
+	set "StartVal=0x3"
+)
 @echo:
 GOTO MAIN_ACTIVITY
 
 :DISABLE_USB_KEYS
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 4 /f
-set "StartVal=0x4"
-echo Access to USB Keys is now DENIED!
+if "%StartVal%"=="0x3" (
+	set "backup_dir=%~dp0Backup_reg"
+	set "backup_file=Backup_reg\USB_LOCKER_backup.reg"
+	if not exist "!backup_dir!" mkdir "!backup_dir!"
+	reg export "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" "!backup_file!"
+	echo %msg_backup%
+	reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start /t REG_DWORD /d 4 /f
+	set "StartVal=0x4"
+)
 @echo:
 GOTO MAIN_ACTIVITY
 
