@@ -2,13 +2,20 @@
 :: Author: g4xyk00
 :: Tested on Windows 7, 10 , 11
 
-echo off
+@echo off
+:: Check if the script is running as administrator.
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+if '%errorlevel%' NEQ '0' (
+	echo USB_Locker requires administrator access. Requesting to be run as administrator.
+    powershell -Command "Start-Process '%~f0' -Verb runAs"
+    exit /b
+)
+
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (set "DEL=%%a")
 for /F "tokens=3" %%c in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\USBSTOR" /v Start 2^>nul') do (set StartVal=%%c)
 
 :: Windows Version
-for /f "tokens=3" %%i in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber 2^>nul') do set "WinVer=%%i"
-echo Your Windows version: %WinVer% 
+for /f "tokens=3" %%i in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber 2^>nul') do set "WinVer=%%i" 
 
 :: To Obtain Current SID
 For /f "tokens=2 delims=\" %%a in ('whoami') do (set currentUser=%%a)
