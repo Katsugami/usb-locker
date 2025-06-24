@@ -11,7 +11,7 @@
 4. Tapez 5 et appuyez sur ENTRÉE pour autoriser les Cles USB, ou tapez 6 et appuyez sur ENTRÉE pour refuser les Cles USB.
 <br />
 
-USB_Locker_en-fr et un Fork de : https://github.com/g4xyk00/usb-locker
+USB_Locker et un Fork de : https://github.com/g4xyk00/usb-locker
 <br />
 J'ai modifier pour ajoutée la lang francais
 <br />
